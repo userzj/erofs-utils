@@ -1,0 +1,62 @@
+#!/bin/sh
+# SPDX-License-Identifier: GPL-2.0+
+#
+# 019 - check extended attribute functionality
+#
+seq=`basename $0`
+seqres=$RESULT_DIR/$(echo $0 | awk '{print $((NF-1))"/"$NF}' FS="/")
+
+# get standard environment, filters and checks
+. "${srcdir}/common/rc"
+
+cleanup()
+{
+	cd /
+	rm -rf $tmp.*
+}
+
+_require_erofs
+
+# remove previous $seqres.full before test
+rm -f $seqres.full
+
+# real QA test starts here
+echo "QA output created by $seq"
+
+have_attr=`which setfattr`
+[ -z "$have_attr" ] && \
+	_notrun "attr isn't installed, skipped."
+
+if [ -z $SCRATCH_DEV ]; then
+	SCRATCH_DEV=$tmp/erofs_$seq.img
+	rm -f SCRATCH_DEV
+fi
+
+localdir="$tmp/$seq"
+rm -rf $localdir
+mkdir -p $localdir
+
+# set random xattrs
+cp -nR ../ $localdir
+dirs=`ls $localdir`
+for d in $dirs; do
+	key=`head -20 /dev/urandom | cksum | cut -f1 -d " "`
+	val="0s"`head -3 /dev/urandom | base64 -w0`
+	setfattr -n user.$key -v $val $localdir/$d
+done
+
+_scratch_mkfs $localdir >> $seqres.full 2>&1 || _fail "failed to mkfs"
+_scratch_mount 2>>$seqres.full
+
+# check xattrs
+for d in $dirs; do
+	xattr1=`getfattr --absolute-names -d $localdir/$d | tail -n+2`
+	xattr2=`getfattr --absolute-names -d $SCRATCH_MNT/$d | tail -n+2`
+	[ "x$xattr1" = "x$xattr2" ] || _fail "-->check xattrs FAILED"
+done
+
+_scratch_unmount
+
+echo Silence is golden
+status=0
+exit 0
