@@ -91,7 +91,10 @@ TESTS += erofs/018
 # 019 - check extended attribute functionality
 TESTS += erofs/019
 
-EXTRA_DIST = common/rc erofs
+# 001 - check inline/non-inline/multidev layout in fscache mode
+TESTS += fscache/001
+
+EXTRA_DIST = common/rc erofs fscache
 
 clean-local: clean-local-check
 .PHONY: clean-local-check
