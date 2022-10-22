@@ -48,7 +48,7 @@ _scratch_mkfs $localdir/erofs-utils --chunksize=1048576 --blobdev=$tmp/blob.img 
 # start the cachefiles daemon with policy POLICY_READ_RA
 ($CACHEFILESD_PROG -p 0x400 $tmp $tmp >> $seqres.full 2>&1 &)
 
-SCRATCH_OPTIONS="-o fsid=erofs_${seq}.img -o device=blob.img"
+SCRATCH_OPTIONS="-o fsid=erofs_${seq}.img -o device=blob.img -o domain_id=erofs_${seq}.domain"
 _scratch_mount 2>>$seqres.full
 
 overlaydir="$tmp/overlay"

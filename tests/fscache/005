@@ -43,7 +43,7 @@ mkdir -p $localdir
 # collect files
 echo "test" > $localdir/testfile
 _scratch_mkfs $localdir >> $seqres.full 2>&1 || _fail "failed to mkfs"
-SCRATCH_OPTIONS="-o fsid=erofs_${seq}.img"
+SCRATCH_OPTIONS="-o fsid=erofs_${seq}.img -o domain_id=erofs_${seq}.domain"
 
 for policy in 0x001 0x010 0x011 0x100 0x101 0x110 0x111; do
 	# start wrong behaved cachefilesd daemon

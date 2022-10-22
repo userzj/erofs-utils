@@ -49,7 +49,7 @@ echo "test" > $localdir/testfile
 ($CACHEFILESD_PROG -p 0x100 $tmp $tmp >> $seqres.full 2>&1 &)
 
 _scratch_mkfs $localdir >> $seqres.full 2>&1 || _fail "failed to mkfs"
-SCRATCH_OPTIONS="-o fsid=erofs_${seq}.img"
+SCRATCH_OPTIONS="-o fsid=erofs_${seq}.img -o domain_id=erofs_${seq}.domain"
 _try_scratch_mount 2>>$seqres.full && _fail "mount shall not succeed"
 
 echo Silence is golden

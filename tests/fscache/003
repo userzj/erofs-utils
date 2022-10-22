@@ -62,7 +62,7 @@ echo "test" > $localdir/testfile
 ($CACHEFILESD_PROG $tmp $tmp >> $seqres.full 2>&1 &)
 
 _scratch_mkfs $localdir >> $seqres.full 2>&1 || _fail "failed to mkfs"
-SCRATCH_OPTIONS="-o fsid=erofs_${seq}.img"
+SCRATCH_OPTIONS="-o fsid=erofs_${seq}.img -o domain_id=erofs_${seq}.domain"
 _scratch_mount 2>>$seqres.full
 cat $SCRATCH_MNT/testfile
 _scratch_unmount
@@ -72,7 +72,7 @@ pkill cachefilesd2
 sleep 1
 ($CACHEFILESD_PROG -t Test $tmp $tmp >> $seqres.full 2>&1 &)
 
-SCRATCH_OPTIONS="-o fsid=erofs_${seq}.img"
+SCRATCH_OPTIONS="-o fsid=erofs_${seq}.img -o domain_id=erofs_${seq}.domain"
 _scratch_mount 2>>$seqres.full
 cat $SCRATCH_MNT/testfile
 _scratch_unmount

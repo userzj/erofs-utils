@@ -50,7 +50,7 @@ echo "test" > $localdir/testfile
 ($CACHEFILESD_PROG $tmp $tmp 2>>$seqres.full &)
 
 _scratch_mkfs $localdir >> $seqres.full 2>&1 || _fail "failed to mkfs scratch"
-SCRATCH_OPTIONS="-o fsid=erofs_${seq}_scratch.img"
+SCRATCH_OPTIONS="-o fsid=erofs_${seq}_scratch.img -o domain_id=erofs_${seq}.domain"
 _scratch_mount 2>>$seqres.full
 cat $SCRATCH_MNT/testfile
 _scratch_unmount
