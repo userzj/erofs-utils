@@ -133,6 +133,9 @@ TESTS += fscache/013
 # 014 - test if multiple erofs filesystem instances can be mounted at the same time
 TESTS += fscache/014
 
+# 015 - test shared domain
+TESTS += fscache/015
+
 EXTRA_DIST = common/rc erofs fscache
 
 clean-local: clean-local-check
