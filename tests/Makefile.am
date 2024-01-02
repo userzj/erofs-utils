@@ -106,7 +106,7 @@ TESTS += fscache/004
 # 005 - test if system could recover from previous wrong behaved user daemon
 TESTS += fscache/005
 
-# 006 - test user daemon closing anon_fd prematurely
+# 006 - test the behavior in the event of a user daemon crash
 TESTS += fscache/006
 
 # 007 - test the behavior when user daemon fails to handle READ request
